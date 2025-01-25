@@ -1,15 +1,15 @@
 #pragma once
 #include <cmath>
-#include "../ComponentManager.hpp"
-#include "../components/AttackComponent.hpp"
-#include "../components/HealthComponent.hpp"
-#include "../components/InputComponent.hpp"
-#include "../components/PositionComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/AttackComponent.hpp"
+#include "ecs/components/HealthComponent.hpp"
+#include "ecs/components/InputComponent.hpp"
+#include "ecs/components/TransformComponent.hpp"
 
 class AttackSystem {
   public:
     void update(float deltaTime, ComponentManager<AttackComponent> &attackManager,
-        ComponentManager<PositionComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
+        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
         ComponentManager<InputComponent> &inputManager)
     {
         for (auto &[entity, health] : healthManager.getAllComponents()) {
@@ -24,6 +24,8 @@ class AttackSystem {
                     performAttack(entity, attack, positionManager, healthManager);
                     attack->resetCooldown();
                     attack->isAttacking = true;
+                } else {
+                    attack->isAttacking = false;
                 }
             }
         }
@@ -31,7 +33,7 @@ class AttackSystem {
 
   private:
     void performAttack(EntityManager::EntityID attacker, AttackComponent *attack,
-        ComponentManager<PositionComponent> &positionManager, ComponentManager<HealthComponent> &healthManager)
+        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager)
     {
         auto *attackerPosition = positionManager.getComponent(attacker);
 

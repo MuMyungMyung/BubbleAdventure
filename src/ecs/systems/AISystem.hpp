@@ -1,16 +1,16 @@
 #pragma once
 
 #include <cmath>
-#include "../ComponentManager.hpp"
-#include "../components/AIComponent.hpp"
-#include "../components/HealthComponent.hpp"
-#include "../components/PositionComponent.hpp"
-#include "../components/TagComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/AIComponent.hpp"
+#include "ecs/components/HealthComponent.hpp"
+#include "ecs/components/TagComponent.hpp"
+#include "ecs/components/TransformComponent.hpp"
 
 class AISystem {
   public:
     void update(float deltaTime, ComponentManager<AIComponent> &aiManager,
-        ComponentManager<PositionComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
+        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
         ComponentManager<TagComponent> &tagManager)
     {
         for (auto &[entity, ai] : aiManager.getAllComponents()) {
@@ -76,7 +76,7 @@ class AISystem {
     }
 
     bool shouldChase(EntityManager::EntityID aiEntity, AIComponent &ai,
-        ComponentManager<PositionComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
+        ComponentManager<TransformComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
     {
         auto *aiPosition = positionManager.getComponent(aiEntity);
         for (auto &[entity, tag] : tagManager.getAllComponents()) {
@@ -96,7 +96,7 @@ class AISystem {
     }
 
     bool shouldAttack(EntityManager::EntityID aiEntity, AIComponent &ai,
-        ComponentManager<PositionComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
+        ComponentManager<TransformComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
     {
         auto *aiPosition = positionManager.getComponent(aiEntity);
         for (auto &[entity, tag] : tagManager.getAllComponents()) {

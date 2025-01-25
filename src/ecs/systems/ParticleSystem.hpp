@@ -2,7 +2,7 @@
 #include <cmath>
 #include "ecs/ComponentManager.hpp"
 #include "ecs/components/ParticleEmitterComponent.hpp"
-#include "ecs/components/PositionComponent.hpp"
+#include "ecs/components/TransformComponent.hpp"
 #include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_render.h>
 
@@ -14,7 +14,7 @@ class ParticleSystem {
     }
 
     void update(float deltaTime, ComponentManager<ParticleEmitterComponent> &particleEmitterManager,
-        ComponentManager<PositionComponent> &positionManager)
+        ComponentManager<TransformComponent> &positionManager)
     {
         for (auto &particle : particles) {
             if (!particle.isActive)
@@ -57,7 +57,7 @@ class ParticleSystem {
     std::vector<Particle> particles;
     float initialLifetime = 1.0f;
 
-    void emitParticles(PositionComponent &emitterPosition, ParticleEmitterComponent &emitter, float deltaTime)
+    void emitParticles(TransformComponent &emitterPosition, ParticleEmitterComponent &emitter, float deltaTime)
     {
         emitter.timeSinceLastEmission += deltaTime;
 

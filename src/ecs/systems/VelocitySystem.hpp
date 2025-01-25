@@ -1,8 +1,8 @@
 #pragma once
 #include <cmath>
-#include "../ComponentManager.hpp"
-#include "../components/InputComponent.hpp"
-#include "../components/VelocityComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/InputComponent.hpp"
+#include "ecs/components/VelocityComponent.hpp"
 
 class VelocitySystem {
   public:

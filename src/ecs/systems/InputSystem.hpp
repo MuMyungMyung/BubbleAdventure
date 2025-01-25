@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SDL3/SDL.h>
-#include "../ComponentManager.hpp"
-#include "../components/InputComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/InputComponent.hpp"
 
 class InputSystem {
   public:

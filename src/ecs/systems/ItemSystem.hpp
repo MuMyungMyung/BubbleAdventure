@@ -1,7 +1,7 @@
 #pragma once
-#include "../ComponentManager.hpp"
-#include "../components/ItemComponent.hpp"
-#include "../components/StatsComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/ItemComponent.hpp"
+#include "ecs/components/StatsComponent.hpp"
 
 class ItemSystem {
   public:

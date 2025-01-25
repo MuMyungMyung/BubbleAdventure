@@ -6,8 +6,10 @@
 #include "components/HealthComponent.hpp"
 #include "components/InputComponent.hpp"
 #include "components/ItemComponent.hpp"
-#include "components/PositionComponent.hpp"
+#include "components/TransformComponent.hpp"
 #include "components/VelocityComponent.hpp"
+#include "ecs/components/SoundComponent.hpp"
+#include "ecs/components/StatsComponent.hpp"
 #include "ecs/systems/ParticleSystem.hpp"
 #include "systems/AISystem.hpp"
 #include "systems/AttackSystem.hpp"
@@ -25,7 +27,7 @@ class World {
     {
     }
     EntityManager entityManager;
-    ComponentManager<PositionComponent> positionManager;
+    ComponentManager<TransformComponent> positionManager;
     ComponentManager<VelocityComponent> velocityManager;
     ComponentManager<HealthComponent> healthManager;
     ComponentManager<InputComponent> inputManager;
@@ -36,6 +38,8 @@ class World {
     ComponentManager<ItemComponent> itemManager;
     ComponentManager<SpriteComponent> spriteManager;
     ComponentManager<ParticleEmitterComponent> particleEmitterManager;
+    ComponentManager<StatsComponent> statsManager;
+    ComponentManager<SoundComponent> soundManager;
 
     void updateSystems(float deltaTime)
     {

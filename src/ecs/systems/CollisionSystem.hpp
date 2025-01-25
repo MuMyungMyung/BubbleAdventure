@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
-#include "../ComponentManager.hpp"
-#include "../components/CollisionComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/CollisionComponent.hpp"
 class CollisionSystem {
   public:
     void checkCollisions(ComponentManager<CollisionComponent> &collisionManager,

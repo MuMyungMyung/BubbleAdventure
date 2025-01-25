@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../ComponentManager.hpp"
-#include "../components/PositionComponent.hpp"
-#include "../components/SpriteComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/SpriteComponent.hpp"
+#include "ecs/components/TransformComponent.hpp"
 #include <SDL3/SDL_render.h>
 #include <unordered_map>
 
 class SpriteSystem {
   public:
     void render(SDL_Renderer *renderer, ComponentManager<SpriteComponent> &spriteManager,
-        ComponentManager<PositionComponent> &positionManager)
+        ComponentManager<TransformComponent> &positionManager)
     {
         for (auto &[entity, sprite] : spriteManager.getAllComponents()) {
             // Get the entity's position
@@ -42,5 +42,6 @@ class SpriteSystem {
     }
 
   private:
+    // TODO
     std::unordered_map<std::string, SDL_Texture *> textureManager; // Maps texture IDs to SDL textures
 };

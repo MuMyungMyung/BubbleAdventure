@@ -34,3 +34,6 @@
 # Directories
 .cache
 obj
+
+# Misc
+compile_commands.json

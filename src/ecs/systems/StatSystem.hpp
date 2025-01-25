@@ -1,6 +1,6 @@
 #pragma once
-#include "../ComponentManager.hpp"
-#include "../components/StatsComponent.hpp"
+#include "ecs/ComponentManager.hpp"
+#include "ecs/components/StatsComponent.hpp"
 
 class StatSystem {
   public:
