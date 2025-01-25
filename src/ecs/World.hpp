@@ -8,6 +8,7 @@
 #include "components/ItemComponent.hpp"
 #include "components/PositionComponent.hpp"
 #include "components/VelocityComponent.hpp"
+#include "ecs/systems/ParticleSystem.hpp"
 #include "systems/AISystem.hpp"
 #include "systems/AttackSystem.hpp"
 #include "systems/CollisionSystem.hpp"
@@ -20,6 +21,9 @@
 
 class World {
   public:
+    explicit World() : particleSystem(100)
+    {
+    }
     EntityManager entityManager;
     ComponentManager<PositionComponent> positionManager;
     ComponentManager<VelocityComponent> velocityManager;
@@ -31,16 +35,29 @@ class World {
     ComponentManager<CollisionComponent> collisionManager;
     ComponentManager<ItemComponent> itemManager;
     ComponentManager<SpriteComponent> spriteManager;
+    ComponentManager<ParticleEmitterComponent> particleEmitterManager;
 
     void updateSystems(float deltaTime)
     {
-        inputSystem.update(inputManager, deltaTime);
-        velocitySystem.update(deltaTime, inputManager, velocityManager);
+        velocitySystem.update(inputManager, velocityManager);
         movementSystem.update(deltaTime, positionManager, velocityManager);
         attackSystem.update(deltaTime, attackManager, positionManager, healthManager, inputManager);
         aiSystem.update(deltaTime, aiManager, positionManager, healthManager, tagManager);
         collisionSystem.checkCollisions(collisionManager, nullptr); // TODO
-        spriteSystem.Render(renderer, spriteManager, positionManager);
+        particleSystem.update(deltaTime, particleEmitterManager, positionManager);
+    }
+
+    void render(SDL_Renderer *renderer)
+    {
+        if (!renderer)
+            return;
+        spriteSystem.render(renderer, spriteManager, positionManager);
+        particleSystem.render(renderer);
+    }
+
+    void handleEvents(const SDL_Event &event)
+    {
+        inputSystem.update(inputManager, event);
     }
 
   private:
@@ -53,6 +70,5 @@ class World {
     CollisionSystem collisionSystem;
     ItemSystem itemSystem;
     SpriteSystem spriteSystem;
-
-    SDL_Renderer *renderer;
+    ParticleSystem particleSystem;
 };

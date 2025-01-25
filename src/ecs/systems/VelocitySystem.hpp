@@ -6,8 +6,7 @@
 
 class VelocitySystem {
   public:
-    void update(float deltaTime, ComponentManager<InputComponent> &inputManager,
-        ComponentManager<VelocityComponent> &velocityManager)
+    void update(ComponentManager<InputComponent> &inputManager, ComponentManager<VelocityComponent> &velocityManager)
     {
         for (auto &[entity, input] : inputManager.getAllComponents()) {
             auto *velocity = velocityManager.getComponent(entity);

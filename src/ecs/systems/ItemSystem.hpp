@@ -37,7 +37,7 @@ class ItemSystem {
             stats.sanity = stats.maxSanity;
     }
 
-    void addToInventory(EntityManager::EntityID player, int itemID)
+    void addToInventory(EntityManager::EntityID, int)
     {
         // TODO
     }

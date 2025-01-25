@@ -6,19 +6,15 @@
 
 class InputSystem {
   public:
-    void update(ComponentManager<InputComponent> &inputManager, float deltaTime)
+    void update(ComponentManager<InputComponent> &inputManager, const SDL_Event &event)
     {
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
-                bool isPressed = (event.type == SDL_EVENT_KEY_DOWN);
+        if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+            bool isPressed = (event.type == SDL_EVENT_KEY_DOWN);
 
-                InputAction action;
-                if (mapKeyToAction(event.key.key, action)) {
-                    for (auto &[entity, input] : inputManager.getAllComponents()) {
-                        auto *mutableInput = inputManager.getComponent(entity);
-                        mutableInput->setAction(action, isPressed);
-                    }
+            InputAction action;
+            if (mapKeyToAction(event.key.key, action)) {
+                for (auto &[entity, input] : inputManager.getAllComponents()) {
+                    input.setAction(action, isPressed);
                 }
             }
         }
@@ -28,9 +24,9 @@ class InputSystem {
     bool mapKeyToAction(SDL_Keycode key, InputAction &action)
     {
         switch (key) {
-            case SDLK_W: action = InputAction::MoveUp; return true;
+            case SDLK_Z: action = InputAction::MoveUp; return true;
             case SDLK_S: action = InputAction::MoveDown; return true;
-            case SDLK_A: action = InputAction::MoveLeft; return true;
+            case SDLK_Q: action = InputAction::MoveLeft; return true;
             case SDLK_D: action = InputAction::MoveRight; return true;
             case SDLK_SPACE: action = InputAction::Attack; return true;
             case SDLK_LSHIFT: action = InputAction::Dash; return true;

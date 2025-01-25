@@ -8,7 +8,7 @@
 
 class SpriteSystem {
   public:
-    void Render(SDL_Renderer *renderer, ComponentManager<SpriteComponent> &spriteManager,
+    void render(SDL_Renderer *renderer, ComponentManager<SpriteComponent> &spriteManager,
         ComponentManager<PositionComponent> &positionManager)
     {
         for (auto &[entity, sprite] : spriteManager.getAllComponents()) {
