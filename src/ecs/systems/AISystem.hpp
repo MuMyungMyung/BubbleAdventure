@@ -10,7 +10,7 @@
 class AISystem {
   public:
     void update(float deltaTime, ComponentManager<AIComponent> &aiManager,
-        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
+        ComponentManager<TransformComponent> &transformManager, ComponentManager<HealthComponent> &healthManager,
         ComponentManager<TagComponent> &tagManager)
     {
         for (auto &[entity, ai] : aiManager.getAllComponents()) {
@@ -25,13 +25,13 @@ class AISystem {
                 case AIComponent::State::Idle:
                     if (ai.onIdle)
                         ai.onIdle();
-                    if (shouldChase(entity, ai, positionManager, tagManager))
+                    if (shouldChase(entity, ai, transformManager, tagManager))
                         ai.currentState = AIComponent::State::Chase;
                     break;
                 case AIComponent::State::Patrol:
                     if (ai.onPatrol)
                         ai.onPatrol();
-                    if (shouldChase(entity, ai, positionManager, tagManager))
+                    if (shouldChase(entity, ai, transformManager, tagManager))
                         ai.currentState = AIComponent::State::Chase;
                     break;
                 case AIComponent::State::Chase:
@@ -39,15 +39,15 @@ class AISystem {
                         ai.onChase();
                     if (shouldFlee(entity, ai, healthManager, tagManager))
                         ai.currentState = AIComponent::State::Flee;
-                    else if (shouldAttack(entity, ai, positionManager, tagManager))
+                    else if (shouldAttack(entity, ai, transformManager, tagManager))
                         ai.currentState = AIComponent::State::Attack;
-                    else if (!shouldChase(entity, ai, positionManager, tagManager))
+                    else if (!shouldChase(entity, ai, transformManager, tagManager))
                         ai.currentState = AIComponent::State::Idle;
                     break;
                 case AIComponent::State::Attack:
                     if (ai.onAttack)
                         ai.onAttack();
-                    if (!shouldAttack(entity, ai, positionManager, tagManager))
+                    if (!shouldAttack(entity, ai, transformManager, tagManager))
                         ai.currentState = AIComponent::State::Chase;
                     break;
                 case AIComponent::State::Flee:
@@ -76,17 +76,17 @@ class AISystem {
     }
 
     bool shouldChase(EntityManager::EntityID aiEntity, AIComponent &ai,
-        ComponentManager<TransformComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
+        ComponentManager<TransformComponent> &transformManager, ComponentManager<TagComponent> &tagManager)
     {
-        auto *aiPosition = positionManager.getComponent(aiEntity);
+        auto *aiTransform = transformManager.getComponent(aiEntity);
         for (auto &[entity, tag] : tagManager.getAllComponents()) {
             if (tag.tag != ai.targetTag)
                 continue;
-            auto *position = positionManager.getComponent(entity);
+            auto *transform = transformManager.getComponent(entity);
 
-            if (aiPosition && position) {
+            if (aiTransform && transform) {
                 float distance =
-                    std::sqrt(std::pow(position->x - aiPosition->x, 2) + std::pow(position->y - aiPosition->y, 2));
+                    std::sqrt(std::pow(transform->x - aiTransform->x, 2) + std::pow(transform->y - aiTransform->y, 2));
                 if (distance <= ai.detectionRange) {
                     return true;
                 }
@@ -96,17 +96,17 @@ class AISystem {
     }
 
     bool shouldAttack(EntityManager::EntityID aiEntity, AIComponent &ai,
-        ComponentManager<TransformComponent> &positionManager, ComponentManager<TagComponent> &tagManager)
+        ComponentManager<TransformComponent> &transformManager, ComponentManager<TagComponent> &tagManager)
     {
-        auto *aiPosition = positionManager.getComponent(aiEntity);
+        auto *aiTransform = transformManager.getComponent(aiEntity);
         for (auto &[entity, tag] : tagManager.getAllComponents()) {
             if (tag.tag != ai.targetTag)
                 continue;
-            auto *position = positionManager.getComponent(entity);
+            auto *transform = transformManager.getComponent(entity);
 
-            if (aiPosition && position) {
+            if (aiTransform && transform) {
                 float distance =
-                    std::sqrt(std::pow(position->x - aiPosition->x, 2) + std::pow(position->y - aiPosition->y, 2));
+                    std::sqrt(std::pow(transform->x - aiTransform->x, 2) + std::pow(transform->y - aiTransform->y, 2));
                 if (distance <= ai.attackRange) {
                     return true;
                 }

@@ -5,15 +5,15 @@
 
 class MovementSystem {
   public:
-    void update(float deltaTime, ComponentManager<TransformComponent> &positionManager,
+    void update(float deltaTime, ComponentManager<TransformComponent> &transformManager,
         ComponentManager<VelocityComponent> &velocityManager)
     {
         for (auto &[entity, velocity] : velocityManager.getAllComponents()) {
-            auto *position = positionManager.getComponent(entity);
+            auto *transform = transformManager.getComponent(entity);
 
-            if (position) {
-                position->x += velocity.dx * deltaTime;
-                position->y += velocity.dy * deltaTime;
+            if (transform) {
+                transform->x += velocity.dx * deltaTime;
+                transform->y += velocity.dy * deltaTime;
             }
         }
     }

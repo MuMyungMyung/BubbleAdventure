@@ -9,19 +9,19 @@
 class SpriteSystem {
   public:
     void render(SDL_Renderer *renderer, ComponentManager<SpriteComponent> &spriteManager,
-        ComponentManager<TransformComponent> &positionManager)
+        ComponentManager<TransformComponent> &transformManager)
     {
         for (auto &[entity, sprite] : spriteManager.getAllComponents()) {
             // Get the entity's position
-            auto *position = positionManager.getComponent(entity);
-            if (!position)
+            auto *transform = transformManager.getComponent(entity);
+            if (!transform)
                 continue;
 
             // Update destination rect based on the entity's position
-            sprite.destinationRect.x = static_cast<int>(position->x);
-            sprite.destinationRect.y = static_cast<int>(position->y);
-            sprite.destinationRect.w = static_cast<int>(sprite.sourceRect.w * sprite.scale);
-            sprite.destinationRect.h = static_cast<int>(sprite.sourceRect.h * sprite.scale);
+            sprite.destinationRect.x = static_cast<int>(transform->x);
+            sprite.destinationRect.y = static_cast<int>(transform->y);
+            sprite.destinationRect.w = static_cast<int>(sprite.sourceRect.w * transform->scale);
+            sprite.destinationRect.h = static_cast<int>(sprite.sourceRect.h * transform->scale);
 
             // Determine flip flags
             SDL_FlipMode flip = SDL_FLIP_NONE;
@@ -32,7 +32,7 @@ class SpriteSystem {
 
             // Render the sprite
             SDL_RenderTextureRotated(renderer, textureManager[sprite.textureID], &sprite.sourceRect,
-                &sprite.destinationRect, (double) sprite.rotation, nullptr, flip);
+                &sprite.destinationRect, (double) transform->rotation, nullptr, flip);
         }
     }
 

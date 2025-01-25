@@ -9,7 +9,7 @@
 class AttackSystem {
   public:
     void update(float deltaTime, ComponentManager<AttackComponent> &attackManager,
-        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager,
+        ComponentManager<TransformComponent> &transformManager, ComponentManager<HealthComponent> &healthManager,
         ComponentManager<InputComponent> &inputManager)
     {
         for (auto &[entity, health] : healthManager.getAllComponents()) {
@@ -21,7 +21,7 @@ class AttackSystem {
             if (attack->canAttack()) {
                 auto *input = inputManager.getComponent(entity);
                 if (input && input->isActionActive(InputAction::Attack)) {
-                    performAttack(entity, attack, positionManager, healthManager);
+                    performAttack(entity, attack, transformManager, healthManager);
                     attack->resetCooldown();
                     attack->isAttacking = true;
                 } else {
@@ -33,24 +33,24 @@ class AttackSystem {
 
   private:
     void performAttack(EntityManager::EntityID attacker, AttackComponent *attack,
-        ComponentManager<TransformComponent> &positionManager, ComponentManager<HealthComponent> &healthManager)
+        ComponentManager<TransformComponent> &transformManager, ComponentManager<HealthComponent> &healthManager)
     {
-        auto *attackerPosition = positionManager.getComponent(attacker);
+        auto *attackerTransform = transformManager.getComponent(attacker);
 
-        if (!attackerPosition)
+        if (!attackerTransform)
             return;
 
         for (auto &[entity, health] : healthManager.getAllComponents()) {
             if (entity == attacker)
                 continue;
 
-            auto *targetPosition = positionManager.getComponent(entity);
+            auto *targetTransform = transformManager.getComponent(entity);
 
-            if (!targetPosition)
+            if (!targetTransform)
                 continue;
 
-            float distance = std::sqrt(std::pow(targetPosition->x - attackerPosition->x, 2)
-                + std::pow(targetPosition->y - attackerPosition->y, 2));
+            float distance = std::sqrt(std::pow(targetTransform->x - attackerTransform->x, 2)
+                + std::pow(targetTransform->y - attackerTransform->y, 2));
 
             if (distance <= attack->range) {
                 health.currentHealth -= attack->damage;

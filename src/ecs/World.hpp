@@ -27,7 +27,7 @@ class World {
     {
     }
     EntityManager entityManager;
-    ComponentManager<TransformComponent> positionManager;
+    ComponentManager<TransformComponent> transformManager;
     ComponentManager<VelocityComponent> velocityManager;
     ComponentManager<HealthComponent> healthManager;
     ComponentManager<InputComponent> inputManager;
@@ -44,18 +44,18 @@ class World {
     void updateSystems(float deltaTime)
     {
         velocitySystem.update(inputManager, velocityManager);
-        movementSystem.update(deltaTime, positionManager, velocityManager);
-        attackSystem.update(deltaTime, attackManager, positionManager, healthManager, inputManager);
-        aiSystem.update(deltaTime, aiManager, positionManager, healthManager, tagManager);
+        movementSystem.update(deltaTime, transformManager, velocityManager);
+        attackSystem.update(deltaTime, attackManager, transformManager, healthManager, inputManager);
+        aiSystem.update(deltaTime, aiManager, transformManager, healthManager, tagManager);
         collisionSystem.checkCollisions(collisionManager, nullptr); // TODO
-        particleSystem.update(deltaTime, particleEmitterManager, positionManager);
+        particleSystem.update(deltaTime, particleEmitterManager, transformManager);
     }
 
     void render(SDL_Renderer *renderer)
     {
         if (!renderer)
             return;
-        spriteSystem.render(renderer, spriteManager, positionManager);
+        spriteSystem.render(renderer, spriteManager, transformManager);
         particleSystem.render(renderer);
     }
 

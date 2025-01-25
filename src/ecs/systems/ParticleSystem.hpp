@@ -14,7 +14,7 @@ class ParticleSystem {
     }
 
     void update(float deltaTime, ComponentManager<ParticleEmitterComponent> &particleEmitterManager,
-        ComponentManager<TransformComponent> &positionManager)
+        ComponentManager<TransformComponent> &transformManager)
     {
         for (auto &particle : particles) {
             if (!particle.isActive)
@@ -32,10 +32,10 @@ class ParticleSystem {
         }
 
         for (auto &[entity, particleEmitter] : particleEmitterManager.getAllComponents()) {
-            auto *position = positionManager.getComponent(entity);
-            if (!position)
+            auto *transform = transformManager.getComponent(entity);
+            if (!transform)
                 continue;
-            emitParticles(*position, particleEmitter, deltaTime);
+            emitParticles(*transform, particleEmitter, deltaTime);
         }
     }
 
@@ -57,7 +57,7 @@ class ParticleSystem {
     std::vector<Particle> particles;
     float initialLifetime = 1.0f;
 
-    void emitParticles(TransformComponent &emitterPosition, ParticleEmitterComponent &emitter, float deltaTime)
+    void emitParticles(TransformComponent &emitterTransform, ParticleEmitterComponent &emitter, float deltaTime)
     {
         emitter.timeSinceLastEmission += deltaTime;
 
@@ -72,8 +72,8 @@ class ParticleSystem {
             float angle = randomFloat(0, emitter.spreadAngle) * (M_PI / 180.0f);
             float speed = emitter.particleSpeed;
 
-            particle->x = emitterPosition.x;
-            particle->y = emitterPosition.y;
+            particle->x = emitterTransform.x;
+            particle->y = emitterTransform.y;
             particle->vx = std::cos(angle) * speed;
             particle->vy = std::sin(angle) * speed;
             particle->life = emitter.particleLifetime;
