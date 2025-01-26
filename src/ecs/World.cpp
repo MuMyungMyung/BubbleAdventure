@@ -27,16 +27,22 @@ void World::updateSystems(float deltaTime)
 {
     velocitySystem.update(inputManager, velocityManager);
     collisionSystem.checkCollisions(
-        collisionManager, [this](EntityManager::EntityID left, EntityManager::EntityID right) {
+        collisionManager, [this, deltaTime](EntityManager::EntityID left, EntityManager::EntityID right) {
             auto *leftVelocity = velocityManager.getComponent(left);
             auto *rightVelocity = velocityManager.getComponent(right);
-            if (leftVelocity) {
+            auto *leftTransform = transformManager.getComponent(left);
+            auto *rightTransform = transformManager.getComponent(right);
+            if (leftVelocity && leftTransform) {
                 leftVelocity->dx = -leftVelocity->dx;
                 leftVelocity->dy = -leftVelocity->dy;
+                leftTransform->x += leftVelocity->dx * deltaTime;
+                leftTransform->y += leftVelocity->dy * deltaTime;
             }
-            if (rightVelocity) {
+            if (rightVelocity && rightTransform) {
                 rightVelocity->dx = -rightVelocity->dx;
                 rightVelocity->dy = -rightVelocity->dy;
+                rightTransform->x += rightVelocity->dx * deltaTime;
+                rightTransform->y += rightVelocity->dy * deltaTime;
             }
         });
     movementSystem.update(deltaTime, transformManager, velocityManager, collisionManager);
