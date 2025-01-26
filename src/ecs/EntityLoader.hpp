@@ -35,7 +35,6 @@ class EntityLoader {
             // Parse components
             if (entityJson.contains("components")) {
                 const auto &components = entityJson["components"];
-                std::cout << components << std::endl;
 
                 // SpriteComponent
                 if (components.contains("SpriteComponent")) {
