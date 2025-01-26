@@ -46,10 +46,21 @@
       },
       "TransformComponent": {
         "x": 200,
-        "y": 300
+        "y": 300,
+        "scale": 1
+      },
+      "CollisionComponent": {
+        "width": 48,
+        "height": 48
       },
       "SpriteComponent": {
-        "texture": "assets/sprites/enemy.png"
+        "texture": "assets/sprites/enemy.bmp",
+        "SourceRect": {
+          "x": 0,
+          "y": 0,
+          "w": 48,
+          "h": 48
+        }
       },
       "HealthComponent": {
         "currentHealth": 50,
@@ -61,6 +72,54 @@
       "CollisionComponent": {
         "width": 48,
         "height": 48
+      }
+    }
+  },
+  {
+    "id": "wall",
+    "components": {
+      "CollisionComponent": {
+        "x": -20,
+        "y": -20,
+        "width": 20,
+        "height": 800,
+        "collisionLayer": 3
+      }
+    }
+  },
+  {
+    "id": "wall",
+    "components": {
+      "CollisionComponent": {
+        "x": -20,
+        "y": -20,
+        "width": 600,
+        "height": 20,
+        "collisionLayer": 3
+      }
+    }
+  },
+  {
+    "id": "wall",
+    "components": {
+      "CollisionComponent": {
+        "x": 800,
+        "y": -20,
+        "width": 20,
+        "height": 600,
+        "collisionLayer": 3
+      }
+    }
+  },
+  {
+    "id": "wall",
+    "components": {
+      "CollisionComponent": {
+        "x": -20,
+        "y": 600,
+        "width": 800,
+        "height": 20,
+        "collisionLayer": 3
       }
     }
   }

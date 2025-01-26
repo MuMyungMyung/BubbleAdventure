@@ -28,6 +28,7 @@ int main(void)
         auto previousTime = SDL_GetTicks();
         EntityLoader::loadEntitiesFromJSON("assets/entities.json", world);
         TextureManager::loadTexture("assets/sprites/player.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/enemy.bmp", mainRenderer);
 
         while (!quit) {
             SDL_Event event;

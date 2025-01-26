@@ -1,4 +1,6 @@
 #include "CollisionSystem.hpp"
+#include <iostream>
+#include <ostream>
 
 void CollisionSystem::checkCollisions(ComponentManager<CollisionComponent> &collisionManager,
     std::function<void(EntityManager::EntityID, EntityManager::EntityID)> onCollision)
@@ -14,7 +16,8 @@ void CollisionSystem::checkCollisions(ComponentManager<CollisionComponent> &coll
             if (!colA || !colB)
                 continue;
 
-            if (isColliding(*colA, *colB)) {
+            if (isColliding(*colA, *colB) && colA->collisionLayer != colB->collisionLayer) {
+                std::cout << "isColliding" << std::endl;
                 if (onCollision)
                     onCollision(entities[i], entities[j]);
             }

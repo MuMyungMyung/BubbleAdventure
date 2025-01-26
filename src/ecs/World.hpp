@@ -65,10 +65,22 @@ class World {
     void updateSystems(float deltaTime)
     {
         velocitySystem.update(inputManager, velocityManager);
-        movementSystem.update(deltaTime, transformManager, velocityManager);
+        collisionSystem.checkCollisions(
+            collisionManager, [this](EntityManager::EntityID left, EntityManager::EntityID right) {
+                auto *leftVelocity = velocityManager.getComponent(left);
+                auto *rightVelocity = velocityManager.getComponent(right);
+                if (leftVelocity) {
+                    leftVelocity->dx = -leftVelocity->dx;
+                    leftVelocity->dy = -leftVelocity->dy;
+                }
+                if (rightVelocity) {
+                    rightVelocity->dx = -rightVelocity->dx;
+                    rightVelocity->dy = -rightVelocity->dy;
+                }
+            });
+        movementSystem.update(deltaTime, transformManager, velocityManager, collisionManager);
         attackSystem.update(deltaTime, attackManager, transformManager, healthManager, inputManager);
         aiSystem.update(deltaTime, aiManager, transformManager, healthManager, tagManager);
-        collisionSystem.checkCollisions(collisionManager, nullptr); // TODO
         particleSystem.update(deltaTime, particleEmitterManager, transformManager);
         soundSystem.update(soundManager, transformManager, attackManager, tagManager);
     }
