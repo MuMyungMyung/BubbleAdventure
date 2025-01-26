@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <iostream>
+#include "Map.hpp"
 #include "ecs/EntityLoader.hpp"
 #include "ecs/World.hpp"
 #include <SDL3/SDL_error.h>
@@ -27,9 +28,14 @@ int main(void)
         bool quit = false;
         auto previousTime = SDL_GetTicks();
         EntityLoader::loadEntitiesFromJSON("assets/entities.json", world);
-        TextureManager::loadTexture("assets/sprites/player.bmp", mainRenderer);
-        TextureManager::loadTexture("assets/sprites/enemy.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/player32.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/enemy32.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/dirt.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/rock.bmp", mainRenderer);
+        TextureManager::loadTexture("assets/sprites/grass.bmp", mainRenderer);
+        Map map;
 
+        map.loadMap("assets/map.json");
         while (!quit) {
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
@@ -45,6 +51,7 @@ int main(void)
             world.updateSystems(deltaTime);
             SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
             SDL_RenderClear(mainRenderer);
+            map.render(mainRenderer);
             world.render(mainRenderer);
             SDL_RenderPresent(mainRenderer);
         }

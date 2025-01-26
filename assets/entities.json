@@ -8,10 +8,10 @@
         "scale": 1
       },
       "SpriteComponent": {
-        "texture": "assets/sprites/player.bmp",
+        "texture": "assets/sprites/player32.bmp",
         "SourceRect": {
-          "w": 64,
-          "h": 64
+          "w": 32,
+          "h": 32
         }
       },
       "StatsComponent": {
@@ -29,8 +29,8 @@
         "loop": false
       },
       "CollisionComponent": {
-        "width": 64,
-        "height": 64
+        "width": 32,
+        "height": 32
       },
       "TagComponent": {
         "tag": "player"
@@ -54,24 +54,26 @@
         "height": 48
       },
       "SpriteComponent": {
-        "texture": "assets/sprites/enemy.bmp",
+        "texture": "assets/sprites/enemy32.bmp",
         "SourceRect": {
           "x": 0,
           "y": 0,
-          "w": 48,
-          "h": 48
+          "w": 32,
+          "h": 32
         }
       },
       "HealthComponent": {
         "currentHealth": 50,
         "maxHealth": 50
       },
-      "AIComponent": {},
+      "AIComponent": {
+        "targetTag": "player"
+      },
       "VelocityComponent": {},
       "AttackComponent": {},
       "CollisionComponent": {
-        "width": 48,
-        "height": 48
+        "width": 32,
+        "height": 32
       }
     }
   },
