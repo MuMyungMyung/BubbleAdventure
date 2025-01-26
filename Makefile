@@ -30,7 +30,7 @@ all: setup $(TARGET)
 setup: obj
 
 obj:
-	mkdir obj
+	mkdir -p obj/ecs/systems
 
 $(TARGET): $(OBJ) $(OBJM)
 	$(CXX) -o $@ $^ $(LDFLAGS)
