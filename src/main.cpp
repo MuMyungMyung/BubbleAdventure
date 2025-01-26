@@ -7,6 +7,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_timer.h>
 
+#include "TextureManager.hpp"
 int main(void)
 {
     SDL_Window *window = nullptr;
@@ -20,28 +21,32 @@ int main(void)
         SDL_Quit();
         return -1;
     }
-    World world;
+    {
+        World world;
 
-    bool quit = false;
-    auto previousTime = SDL_GetTicks();
-    EntityLoader::loadEntitiesFromJSON("assets/entities.json", world);
+        bool quit = false;
+        auto previousTime = SDL_GetTicks();
+        EntityLoader::loadEntitiesFromJSON("assets/entities.json", world);
+        TextureManager::loadTexture("assets/sprites/player.bmp", mainRenderer);
 
-    while (!quit) {
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_EVENT_QUIT) {
-                SDL_DestroyWindow(window);
-                quit = true;
+        while (!quit) {
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_EVENT_QUIT) {
+                    SDL_DestroyWindow(window);
+                    quit = true;
+                }
+                world.handleEvents(event);
             }
-            world.handleEvents(event);
+            auto currentTime = SDL_GetTicks();
+            float deltaTime = (currentTime - previousTime) / 1000.0f;
+            previousTime = currentTime;
+            world.updateSystems(deltaTime);
+            SDL_SetRenderDrawColor(mainRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+            SDL_RenderClear(mainRenderer);
+            world.render(mainRenderer);
+            SDL_RenderPresent(mainRenderer);
         }
-        auto currentTime = SDL_GetTicks();
-        float deltaTime = (currentTime - previousTime) / 1000.0f;
-        previousTime = currentTime;
-        world.updateSystems(deltaTime);
-        SDL_RenderClear(mainRenderer);
-        world.render(mainRenderer);
-        SDL_RenderPresent(mainRenderer);
     }
     SDL_DestroyRenderer(mainRenderer);
     SDL_DestroyWindow(window);

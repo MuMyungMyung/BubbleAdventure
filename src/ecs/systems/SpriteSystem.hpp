@@ -1,10 +1,10 @@
 #pragma once
 
+#include "TextureManager.hpp"
 #include "ecs/ComponentManager.hpp"
 #include "ecs/components/SpriteComponent.hpp"
 #include "ecs/components/TransformComponent.hpp"
 #include <SDL3/SDL_render.h>
-#include <unordered_map>
 
 class SpriteSystem {
   public:
@@ -31,17 +31,8 @@ class SpriteSystem {
                 flip = (SDL_FlipMode) (flip | SDL_FLIP_VERTICAL);
 
             // Render the sprite
-            SDL_RenderTextureRotated(renderer, textureManager[sprite.textureID], &sprite.sourceRect,
+            SDL_RenderTextureRotated(renderer, TextureManager::getTexture(sprite.textureID), &sprite.sourceRect,
                 &sprite.destinationRect, (double) transform->rotation, nullptr, flip);
         }
     }
-
-    void addTexture(const std::string &id, SDL_Texture *texture)
-    {
-        textureManager[id] = texture;
-    }
-
-  private:
-    // TODO
-    std::unordered_map<std::string, SDL_Texture *> textureManager; // Maps texture IDs to SDL textures
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
+#include "TextureManager.hpp"
 #include "components/AttackComponent.hpp"
 #include "components/CollisionComponent.hpp"
 #include "components/HealthComponent.hpp"
@@ -42,6 +43,24 @@ class World {
     ComponentManager<ParticleEmitterComponent> particleEmitterManager;
     ComponentManager<StatsComponent> statsManager;
     ComponentManager<SoundComponent> soundManager;
+
+    void removeEntity(EntityManager::EntityID id)
+    {
+        transformManager.removeComponent(id);
+        velocityManager.removeComponent(id);
+        healthManager.removeComponent(id);
+        inputManager.removeComponent(id);
+        attackManager.removeComponent(id);
+        aiManager.removeComponent(id);
+        tagManager.removeComponent(id);
+        collisionManager.removeComponent(id);
+        itemManager.removeComponent(id);
+        spriteManager.removeComponent(id);
+        particleEmitterManager.removeComponent(id);
+        statsManager.removeComponent(id);
+        soundManager.removeComponent(id);
+        entityManager.destroyEntities(id);
+    }
 
     void updateSystems(float deltaTime)
     {

@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <stdexcept>
 #include "ecs/World.hpp"
+#include "ecs/components/ItemComponent.hpp"
 
 using json = nlohmann::json;
 
@@ -34,6 +35,7 @@ class EntityLoader {
             // Parse components
             if (entityJson.contains("components")) {
                 const auto &components = entityJson["components"];
+                std::cout << components << std::endl;
 
                 // SpriteComponent
                 if (components.contains("SpriteComponent")) {
@@ -104,6 +106,48 @@ class EntityLoader {
                     AIComponent comp;
                     comp.targetTag = ai.value("targetTag", "Player");
                     world.aiManager.addComponent(entity, comp);
+                }
+                if (components.contains("InputComponent")) {
+                    auto input = components["InputComponent"];
+                    InputComponent comp;
+                    world.inputManager.addComponent(entity, comp);
+                }
+                if (components.contains("VelocityComponent")) {
+                    auto velocity = components["VelocityComponent"];
+                    VelocityComponent comp;
+                    comp.dx = velocity.value("dx", 0);
+                    comp.dy = velocity.value("dy", 0);
+                    world.velocityManager.addComponent(entity, comp);
+                }
+                if (components.contains("TransformComponent")) {
+                    auto transform = components["TransformComponent"];
+                    TransformComponent comp;
+                    comp.x = transform.value("x", 0);
+                    comp.y = transform.value("y", 0);
+                    comp.rotation = transform.value("rotation", 0);
+                    comp.scale = transform.value("scale", 0);
+                    world.transformManager.addComponent(entity, comp);
+                }
+                if (components.contains("TagComponent")) {
+                    auto tag = components["TagComponent"];
+                    TagComponent comp;
+                    comp.tag = tag.value("tag", "Unknown");
+                    world.tagManager.addComponent(entity, comp);
+                }
+                if (components.contains("ParticleEmitterComponent")) {
+                    auto particleEmitter = components["ParticleEmitterComponent"];
+                    ParticleEmitterComponent comp;
+                    world.particleEmitterManager.addComponent(entity, comp);
+                }
+                if (components.contains("AttackComponent")) {
+                    auto attack = components["AttackComponent"];
+                    AttackComponent comp;
+                    world.attackManager.addComponent(entity, comp);
+                }
+                if (components.contains("ItemComponent")) {
+                    auto item = components["ItemComponent"];
+                    ItemComponent comp;
+                    world.itemManager.addComponent(entity, comp);
                 }
             }
         }
