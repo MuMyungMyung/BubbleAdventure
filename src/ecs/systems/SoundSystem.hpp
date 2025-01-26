@@ -40,13 +40,14 @@ class SoundSystem {
                 continue;
             }
             if (attack->isAttacking && tag->tag == "player") {
-                loadSound("attack", "assets/sounds/bubblePopPopPop.wav");
-                playSound("attack");
+                for (auto i : sound.soundEffects) {
+                    loadSound("PlayerAttack", i);
+                    playSound("PlayerAttack");
+                }
             }
         }
     }
 
-  private:
     // Load a sound effect into memory
     // TODO: Error handling
     void loadSound(const std::string &soundName, const std::string &filePath)
@@ -65,6 +66,7 @@ class SoundSystem {
         m_soundEffects[soundName] = sound;
     }
 
+  private:
     // Play a sound effect by name
     void playSound(const std::string &soundName)
     {

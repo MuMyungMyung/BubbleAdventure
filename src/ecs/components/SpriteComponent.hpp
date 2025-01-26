@@ -9,6 +9,10 @@ struct SpriteComponent {
     bool flipHorizontally = false;
     bool flipVertically = false;
 
+    SpriteComponent()
+    {
+    }
+
     SpriteComponent(const std::string &texID, SDL_FRect srcRect, SDL_FRect destRect)
         : textureID(texID), sourceRect(srcRect), destinationRect(destRect)
     {

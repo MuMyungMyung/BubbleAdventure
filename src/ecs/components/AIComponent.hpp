@@ -18,7 +18,7 @@ struct AIComponent {
     float detectionRange = 5.0f;      // Distance at which the AI detects the player
     float attackRange = 1.5f;         // Distance required to attack the target
 
-    // Optional: Behavior functions
+    // Behavior functions
     std::function<void()> onIdle = nullptr;   // Custom behavior for idle
     std::function<void()> onPatrol = nullptr; // Custom behavior for patrol
     std::function<void()> onChase = nullptr;  // Custom behavior for chase

@@ -11,6 +11,7 @@
 #include "ecs/components/SoundComponent.hpp"
 #include "ecs/components/StatsComponent.hpp"
 #include "ecs/systems/ParticleSystem.hpp"
+#include "ecs/systems/SoundSystem.hpp"
 #include "systems/AISystem.hpp"
 #include "systems/AttackSystem.hpp"
 #include "systems/CollisionSystem.hpp"
@@ -25,6 +26,7 @@ class World {
   public:
     explicit World() : particleSystem(100)
     {
+        soundSystem.loadSound("player_attack", "assets/sounds/bubblePopPopPop.wav");
     }
     EntityManager entityManager;
     ComponentManager<TransformComponent> transformManager;
@@ -49,6 +51,7 @@ class World {
         aiSystem.update(deltaTime, aiManager, transformManager, healthManager, tagManager);
         collisionSystem.checkCollisions(collisionManager, nullptr); // TODO
         particleSystem.update(deltaTime, particleEmitterManager, transformManager);
+        soundSystem.update(soundManager, transformManager, attackManager, tagManager);
     }
 
     void render(SDL_Renderer *renderer)
@@ -75,4 +78,5 @@ class World {
     ItemSystem itemSystem;
     SpriteSystem spriteSystem;
     ParticleSystem particleSystem;
+    SoundSystem soundSystem;
 };

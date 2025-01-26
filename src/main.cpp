@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <iostream>
+#include "ecs/EntityLoader.hpp"
 #include "ecs/World.hpp"
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_init.h>
@@ -23,6 +24,7 @@ int main(void)
 
     bool quit = false;
     auto previousTime = SDL_GetTicks();
+    EntityLoader::loadEntitiesFromJSON("assets/entities.json", world);
 
     while (!quit) {
         SDL_Event event;
