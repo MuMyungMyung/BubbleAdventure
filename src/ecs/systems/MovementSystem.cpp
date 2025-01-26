@@ -9,8 +9,8 @@ void MovementSystem::update(float deltaTime, ComponentManager<TransformComponent
         auto *collision = collisionManager.getComponent(entity);
 
         if (transform) {
-            transform->x += velocity.dx * deltaTime;
-            transform->y += velocity.dy * deltaTime;
+            transform->x += velocity.dx * 100 * deltaTime;
+            transform->y += velocity.dy * 100 * deltaTime;
         }
         if (collision && transform) {
             collision->x = transform->x;

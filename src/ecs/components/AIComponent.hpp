@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <ostream>
 #include <string>
 
 struct AIComponent {
@@ -25,3 +26,16 @@ struct AIComponent {
     std::function<void()> onAttack = nullptr; // Custom behavior for attack
     std::function<void()> onFlee = nullptr;   // Custom behavior for flee
 };
+
+inline std::ostream &operator<<(std::ostream &os, const AIComponent::State &state)
+{
+    switch (state) {
+        case AIComponent::State::Idle: os << "Idle"; break;
+        case AIComponent::State::Patrol: os << "Patrol"; break;
+        case AIComponent::State::Chase: os << "Chase"; break;
+        case AIComponent::State::Attack: os << "Attack"; break;
+        case AIComponent::State::Flee: os << "Flee"; break;
+        default: os << "Unknown State"; break;
+    }
+    return os;
+}

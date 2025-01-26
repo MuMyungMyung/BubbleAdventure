@@ -1,4 +1,5 @@
 #include "AISystem.hpp"
+#include <iostream>
 void AISystem::update(float deltaTime, ComponentManager<AIComponent> &aiManager,
     ComponentManager<TransformComponent> &transformManager, ComponentManager<HealthComponent> &healthManager,
     ComponentManager<TagComponent> &tagManager)
@@ -76,7 +77,7 @@ bool AISystem::shouldChase(EntityManager::EntityID aiEntity, AIComponent &ai,
         if (aiTransform && transform) {
             float distance =
                 std::sqrt(std::pow(transform->x - aiTransform->x, 2) + std::pow(transform->y - aiTransform->y, 2));
-            if (distance <= ai.detectionRange) {
+            if (distance <= ai.detectionRange * 32) {
                 return true;
             }
         }
@@ -96,7 +97,7 @@ bool AISystem::shouldAttack(EntityManager::EntityID aiEntity, AIComponent &ai,
         if (aiTransform && transform) {
             float distance =
                 std::sqrt(std::pow(transform->x - aiTransform->x, 2) + std::pow(transform->y - aiTransform->y, 2));
-            if (distance <= ai.attackRange) {
+            if (distance <= ai.attackRange * 32) {
                 return true;
             }
         }

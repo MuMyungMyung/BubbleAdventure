@@ -1,4 +1,6 @@
 #include "AttackSystem.hpp"
+#include <iostream>
+#include <ostream>
 
 void AttackSystem::update(float deltaTime, ComponentManager<AttackComponent> &attackManager,
     ComponentManager<TransformComponent> &transformManager, ComponentManager<HealthComponent> &healthManager,
@@ -43,8 +45,9 @@ void AttackSystem::performAttack(EntityManager::EntityID attacker, AttackCompone
         float distance = std::sqrt(std::pow(targetTransform->x - attackerTransform->x, 2)
             + std::pow(targetTransform->y - attackerTransform->y, 2));
 
-        if (distance <= attack->range) {
+        if (distance <= attack->range * 32) {
             health.currentHealth -= attack->damage;
+            std::cout << "Loosing health: " << health.currentHealth << std::endl;
             if (health.currentHealth < 0)
                 health.currentHealth = 0;
         }
